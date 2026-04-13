@@ -1,4 +1,4 @@
-export type Page = 'dashboard' | 'sales' | 'expenses' | 'tasks' | 'savings' | 'clients' | 'reports' | 'settings';
+export type Page = 'dashboard' | 'sales' | 'expenses' | 'tasks' | 'savings' | 'clients' | 'reports' | 'settings' | 'insights';
 
 export interface Sale {
   id: string;

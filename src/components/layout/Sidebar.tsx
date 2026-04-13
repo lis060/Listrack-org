@@ -7,6 +7,7 @@ import {
   Users,
   BarChart3,
   Settings,
+  Sparkles,
   Menu,
   X
 } from 'lucide-react';
@@ -23,6 +24,7 @@ interface SidebarProps {
 
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'insights', label: 'AI Insights', icon: Sparkles },
   { id: 'sales', label: 'Sales', icon: CircleDollarSign },
   { id: 'expenses', label: 'Expenses', icon: Receipt },
   { id: 'tasks', label: 'Tasks', icon: CheckSquare },

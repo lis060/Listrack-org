@@ -8,6 +8,7 @@ import { SavingsList } from '@/components/savings/SavingsList';
 import { ClientList } from '@/components/clients/ClientList';
 import { ReportsPage } from '@/components/reports/ReportsPage';
 import { SettingsPage } from '@/components/settings/SettingsPage';
+import { AIInsights } from '@/components/insights/AIInsights';
 import { Page } from '@/types';
 import { motion, AnimatePresence } from 'motion/react';
 import { Bell, Search, User, LogOut, Menu, X } from 'lucide-react';
@@ -61,6 +62,8 @@ function AppContent() {
         return <ReportsPage />;
       case 'settings':
         return <SettingsPage />;
+      case 'insights':
+        return <AIInsights />;
       default:
         return <Overview />;
     }
