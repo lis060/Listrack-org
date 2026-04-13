@@ -310,12 +310,12 @@ export function Overview({ onPageChange }: OverviewProps) {
                         </TableCell>
                         <TableCell className="py-4 md:py-5">
                           <div className="flex flex-col">
-                            <span className="text-sm font-bold text-slate-900">{sale.service}</span>
-                            <span className="text-[10px] text-slate-400 sm:hidden">{sale.client}</span>
+                            <span className="text-sm font-bold text-slate-900">{sale.serviceName}</span>
+                            <span className="text-[10px] text-slate-400 sm:hidden">{sale.customerName}</span>
                           </div>
                         </TableCell>
                         <TableCell className="py-4 md:py-5 hidden sm:table-cell">
-                          <span className="text-xs font-medium text-slate-500">{sale.client}</span>
+                          <span className="text-xs font-medium text-slate-500">{sale.customerName}</span>
                         </TableCell>
                         <TableCell className="py-4 md:py-5 text-right">
                           <span className="text-sm font-mono font-bold text-slate-900">${sale.amount.toLocaleString()}</span>
@@ -323,9 +323,9 @@ export function Overview({ onPageChange }: OverviewProps) {
                         <TableCell className="py-4 md:py-5 text-center">
                           <Badge className={cn(
                             "px-2 py-0.5 h-5 md:h-6 text-[8px] md:text-[9px] font-bold uppercase tracking-widest border",
-                            sale.status === 'completed' ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-amber-50 text-amber-700 border-amber-100"
+                            sale.paymentStatus === 'completed' ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-amber-50 text-amber-700 border-amber-100"
                           )}>
-                            {sale.status}
+                            {sale.paymentStatus}
                           </Badge>
                         </TableCell>
                       </TableRow>

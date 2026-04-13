@@ -41,10 +41,10 @@ service cloud.firestore {
     // Domain Validators
     // ===============================================================
     function isValidSale() {
-      return isValidString('service', 1, 100) &&
-             isValidString('client', 1, 100) &&
+      return isValidString('serviceName', 1, 100) &&
+             isValidString('customerName', 1, 100) &&
              isValidNumber('amount', 0) &&
-             request.resource.data.status in ['completed', 'pending'];
+             request.resource.data.paymentStatus in ['completed', 'pending'];
     }
 
     function isValidExpense() {
