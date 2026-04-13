@@ -1,0 +1,122 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+          (request.auth.token.email == "dei0608076045@gmail.com" || 
+           request.auth.token.email == "lisgraphix17@gmail.com") && 
+          request.auth.token.email_verified == true;
+    }
+
+    function isValidString(field, min, max) {
+      return request.resource.data[field] is string && 
+             request.resource.data[field].size() >= min && 
+             request.resource.data[field].size() <= max;
+    }
+
+    function isValidNumber(field, min) {
+      return request.resource.data[field] is number && request.resource.data[field] >= min;
+    }
+
+    function userIdUnchanged() {
+      return !('userId' in request.resource.data) || request.resource.data.userId == resource.data.userId;
+    }
+
+    function userIdMatches() {
+      return request.resource.data.userId == request.auth.uid;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    function isValidSale() {
+      return isValidString('service', 1, 100) &&
+             isValidString('client', 1, 100) &&
+             isValidNumber('amount', 0) &&
+             request.resource.data.status in ['completed', 'pending'];
+    }
+
+    function isValidExpense() {
+      return isValidString('name', 1, 100) &&
+             isValidString('category', 1, 50) &&
+             isValidNumber('amount', 0);
+    }
+
+    function isValidTask() {
+      return isValidString('title', 1, 200) &&
+             request.resource.data.priority in ['low', 'medium', 'high'] &&
+             request.resource.data.status in ['pending', 'completed'];
+    }
+
+    function isValidSavings() {
+      return isValidString('month', 1, 50) &&
+             isValidNumber('targetAmount', 0) &&
+             isValidNumber('savedAmount', 0);
+    }
+
+    function isValidClient() {
+      return isValidString('name', 1, 100) &&
+             isValidString('businessName', 1, 100) &&
+             request.resource.data.status in ['Lead', 'Active', 'Completed', 'Follow-up'] &&
+             (!('followUpDate' in request.resource.data) || request.resource.data.followUpDate is string);
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+    match /sales/{saleId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidSale() && userIdMatches();
+      allow update: if isAuthenticated() && isValidSale() && userIdUnchanged();
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /expenses/{expenseId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidExpense() && userIdMatches();
+      allow update: if isAuthenticated() && isValidExpense() && userIdUnchanged();
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidTask() && userIdMatches();
+      allow update: if isAuthenticated() && isValidTask() && userIdUnchanged();
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /savings/{savingsId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidSavings() && userIdMatches();
+      allow update: if isAuthenticated() && isValidSavings() && userIdUnchanged();
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /clients/{clientId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidClient() && userIdMatches();
+      allow update: if isAuthenticated() && isValidClient() && userIdUnchanged();
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /settings/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}

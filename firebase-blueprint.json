@@ -1,0 +1,112 @@
+{
+  "entities": {
+    "Sale": {
+      "title": "Sale",
+      "description": "A record of a service sold to a client.",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "service": { "type": "string" },
+        "client": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["completed", "pending"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["date", "service", "client", "amount", "status", "userId"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "A record of a business expense.",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["date", "name", "category", "amount", "userId"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A business task or to-do item.",
+      "type": "object",
+      "properties": {
+        "task": { "type": "string" },
+        "client": { "type": "string" },
+        "deadline": { "type": "string", "format": "date" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["task", "client", "deadline", "priority", "status", "userId"]
+    },
+    "Savings": {
+      "title": "Savings",
+      "description": "A record of savings progress.",
+      "type": "object",
+      "properties": {
+        "month": { "type": "string" },
+        "targetAmount": { "type": "number" },
+        "savedAmount": { "type": "number" },
+        "note": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["month", "targetAmount", "savedAmount", "userId"]
+    },
+    "Client": {
+      "title": "Client",
+      "description": "A record of a business client.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "businessName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "service": { "type": "string" },
+        "status": { "type": "string", "enum": ["Lead", "Active", "Completed", "Follow-up"] },
+        "note": { "type": "string" },
+        "followUpDate": { "type": "string", "format": "date" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["name", "status", "userId"]
+    },
+    "UserSettings": {
+      "title": "UserSettings",
+      "description": "User preferences and business settings.",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "businessName": { "type": "string" },
+        "currency": { "type": "string" },
+        "monthlySavingsTarget": { "type": "number" },
+        "businessCategories": { "type": "array", "items": { "type": "string" } },
+        "defaultSalesCategory": { "type": "string" },
+        "defaultExpenseCategory": { "type": "string" },
+        "emailNotifications": { "type": "boolean" },
+        "taskReminders": { "type": "boolean" },
+        "savingsReminders": { "type": "boolean" },
+        "followUpReminders": { "type": "boolean" },
+        "theme": { "type": "string", "enum": ["light", "dark", "system"] },
+        "rowsPerPage": { "type": "number" },
+        "dateFormat": { "type": "string" },
+        "dashboardDefaultView": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/sales": { "schema": "Sale", "description": "Collection of business sales." },
+    "/expenses": { "schema": "Expense", "description": "Collection of business expenses." },
+    "/tasks": { "schema": "Task", "description": "Collection of business tasks." },
+    "/savings": { "schema": "Savings", "description": "Collection of savings records." },
+    "/clients": { "schema": "Client", "description": "Collection of business clients." },
+    "/settings": { "schema": "UserSettings", "description": "Collection of user settings." }
+  }
+}
